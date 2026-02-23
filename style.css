@@ -17,19 +17,23 @@ body {
   padding: 30px;
   border-radius: 15px;
   width: 100%;
-  max-width: 900px;
+  max-width: 1000px;
   box-shadow: 0 10px 30px rgba(0,0,0,0.3);
 }
 
-.logo-container {
+.titulo {
   text-align: center;
-  margin-bottom: 20px;
+  color: #B2CB29;
+  font-size: 32px;
+  margin-bottom: 30px;
+  font-weight: bold;
 }
 
-.logo {
-  max-width: 320px;
-  width: 100%;
-  height: auto;
+.subtitulo {
+  margin-top: 35px;
+  margin-bottom: 15px;
+  color: #2c5364;
+  font-size: 20px;
 }
 
 .grid {
@@ -44,14 +48,40 @@ body {
 }
 
 label {
-  margin-bottom: 5px;
+  margin-bottom: 6px;
   font-weight: 600;
+  color: #333;
 }
 
 input, select {
   padding: 10px;
   border-radius: 8px;
   border: 1px solid #ccc;
+  transition: 0.2s ease;
+}
+
+input:focus, select:focus {
+  border-color: #B2CB29;
+  outline: none;
+}
+
+.photos-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+.photo-group {
+  background: #f8f8f8;
+  padding: 15px;
+  border-radius: 10px;
+  border: 1px solid #eee;
+}
+
+.photo-group input {
+  width: 100%;
+  margin-top: 5px;
 }
 
 .btn {
@@ -64,6 +94,7 @@ input, select {
   border-radius: 10px;
   font-size: 16px;
   cursor: pointer;
+  transition: 0.3s ease;
 }
 
 .btn:hover {
