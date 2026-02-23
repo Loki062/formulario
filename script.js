@@ -5,8 +5,9 @@ document.getElementById("avaliacaoForm").addEventListener("submit", async functi
 
   const doc = new jsPDF();
   const pageWidth = doc.internal.pageSize.getWidth();
+  let y = 40;
 
-  // ===== FUNDO CABEÇALHO =====
+  // ===== CABEÇALHO =====
   doc.setFillColor(178, 203, 41); // #B2CB29
   doc.rect(0, 0, pageWidth, 30, "F");
 
@@ -14,16 +15,16 @@ document.getElementById("avaliacaoForm").addEventListener("submit", async functi
   doc.setFontSize(18);
   doc.text("CHECKLIST TÉCNICO - EFICIENCIA SOLAR", pageWidth / 2, 18, { align: "center" });
 
-  let y = 40;
-
   doc.setTextColor(0, 0, 0);
   doc.setFontSize(12);
 
+  // ===== FUNÇÃO PARA LINHAS =====
   function linha(label, valor) {
     doc.text(`${label}: ${valor || "-"}`, 20, y);
     y += 8;
   }
 
+  // ===== DADOS =====
   linha("Cliente", cliente.value);
   linha("Endereço", endereco.value);
   linha("Número do Poste", poste.value);
@@ -46,16 +47,16 @@ document.getElementById("avaliacaoForm").addEventListener("submit", async functi
   doc.text("FOTOS ANEXADAS", 20, y);
   y += 10;
 
-  // ===== FUNÇÃO PARA INSERIR IMAGEM =====
+  // ===== INSERIR IMAGEM NO PDF =====
   async function adicionarImagem(inputId, titulo) {
     const input = document.getElementById(inputId);
 
-    if (input.files.length > 0) {
+    if (input && input.files.length > 0) {
       const file = input.files[0];
 
-      const reader = new FileReader();
-
       return new Promise((resolve) => {
+        const reader = new FileReader();
+
         reader.onload = function (event) {
           const imgData = event.target.result;
 
@@ -68,8 +69,8 @@ document.getElementById("avaliacaoForm").addEventListener("submit", async functi
           doc.text(titulo, 20, y);
           y += 5;
 
-          doc.addImage(imgData, "JPEG", 20, y, 80, 60);
-          y += 70;
+          doc.addImage(imgData, "JPEG", 20, y, 90, 65);
+          y += 75;
 
           resolve();
         };
@@ -79,17 +80,54 @@ document.getElementById("avaliacaoForm").addEventListener("submit", async functi
     }
   }
 
-  await adicionarImagem("foto1", "Caixa do Medidor");
-  await adicionarImagem("foto2", "Disjuntor de Entrada");
-  await adicionarImagem("foto3", "Medidor");
-  await adicionarImagem("foto4", "Padrão");
-  await adicionarImagem("foto5", "Número do Poste");
-  await adicionarImagem("foto6", "Quadro de Distribuição");
-  await adicionarImagem("foto7", "Telhado Localização");
+  await adicionarImagem("foto1", "01 - Caixa do Medidor");
+  await adicionarImagem("foto2", "02 - Disjuntor de Entrada");
+  await adicionarImagem("foto3", "03 - Medidor");
+  await adicionarImagem("foto4", "04 - Padrão");
+  await adicionarImagem("foto5", "05 - Número do Poste");
+  await adicionarImagem("foto6", "06 - Quadro de Distribuição");
+  await adicionarImagem("foto7", "07 - Telhado / Localização");
 
-  // ===== DATA AUTOMÁTICA =====
+  // ===== DATA =====
   doc.setFontSize(10);
   doc.text("Data: " + new Date().toLocaleDateString(), 20, 285);
 
-  doc.save("checklist-eficiencia-solar.pdf");
+  // ===== CRIAR ZIP =====
+  const zip = new JSZip();
+
+  const nomeCliente = cliente.value
+    ? cliente.value.replace(/\s+/g, "_")
+    : "cliente";
+
+  // PDF como blob
+  const pdfBlob = doc.output("blob");
+  zip.file(`checklist-${nomeCliente}.pdf`, pdfBlob);
+
+  // ===== FUNÇÃO PARA FOTO ORIGINAL =====
+  function adicionarFotosAoZip(inputId, nomeBase) {
+    const input = document.getElementById(inputId);
+
+    if (input && input.files.length > 0) {
+      const file = input.files[0];
+
+      const extensao = file.name.split(".").pop();
+      zip.file(`fotos/${nomeBase}.${extensao}`, file);
+    }
+  }
+
+  adicionarFotosAoZip("foto1", "01_caixa_medidor");
+  adicionarFotosAoZip("foto2", "02_disjuntor_entrada");
+  adicionarFotosAoZip("foto3", "03_medidor");
+  adicionarFotosAoZip("foto4", "04_padrao");
+  adicionarFotosAoZip("foto5", "05_numero_poste");
+  adicionarFotosAoZip("foto6", "06_quadro_distribuicao");
+  adicionarFotosAoZip("foto7", "07_telhado");
+
+  // ===== GERAR ZIP FINAL =====
+  zip.generateAsync({ type: "blob" }).then(function (content) {
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(content);
+    link.download = `checklist-${nomeCliente}.zip`;
+    link.click();
+  });
 });
