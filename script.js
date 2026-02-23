@@ -23,6 +23,7 @@ document.getElementById("avaliacaoForm").addEventListener("submit", async functi
   const estrutura = document.getElementById("estrutura")?.value || "-";
   const material = document.getElementById("material")?.value || "-";
   const distancia = document.getElementById("distancia")?.value || "-";
+  const localizacao = document.getElementById("localizacao")?.value || "-";
 
   // ===== CABEÇALHO =====
   doc.setFillColor(178, 203, 41);
@@ -55,6 +56,20 @@ document.getElementById("avaliacaoForm").addEventListener("submit", async functi
   linha("Estrutura de Montagem", estrutura);
   linha("Material da Terça", material);
   linha("Distância entre as Terças", distancia);
+  y += 4;
+
+doc.text("Link da Localização:", 20, y);
+y += 6;
+
+if (localizacao !== "-") {
+  doc.setTextColor(0, 0, 255); // azul padrão link
+  doc.textWithLink("Abrir no Google Maps", 20, y, { url: localizacao });
+  doc.setTextColor(0, 0, 0);
+  y += 8;
+} else {
+  doc.text("-", 20, y);
+  y += 8;
+}
 
   y += 10;
 
