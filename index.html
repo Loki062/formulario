@@ -5,38 +5,45 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Avaliação Técnica</title>
   <link rel="stylesheet" href="style.css">
+
+  <!-- Biblioteca PDF -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>
 <body>
 
 <div class="container">
-  <h1>Avaliação Técnica</h1>
+
+  <div class="logo-container">
+    <img src="logo.png" alt="Eficiência Solar Barbosa" class="logo">
+  </div>
 
   <form id="avaliacaoForm">
 
     <div class="grid">
+
       <div class="input-group">
         <label>Cliente</label>
-        <input type="text" required>
+        <input type="text" id="cliente" required>
       </div>
 
       <div class="input-group">
         <label>Endereço</label>
-        <input type="text" required>
+        <input type="text" id="endereco" required>
       </div>
 
       <div class="input-group">
         <label>Número do Poste</label>
-        <input type="text">
+        <input type="text" id="poste">
       </div>
 
       <div class="input-group">
         <label>Número do Medidor</label>
-        <input type="text">
+        <input type="text" id="medidor">
       </div>
 
       <div class="input-group">
         <label>Tipo de Saída</label>
-        <select>
+        <select id="saida">
           <option>Aéreo</option>
           <option>Subterrâneo</option>
         </select>
@@ -44,7 +51,7 @@
 
       <div class="input-group">
         <label>Sistema</label>
-        <select>
+        <select id="sistema">
           <option>Monofásico</option>
           <option>Bifásico</option>
           <option>Trifásico</option>
@@ -53,7 +60,7 @@
 
       <div class="input-group">
         <label>Tensão</label>
-        <select>
+        <select id="tensao">
           <option>380V</option>
           <option>220V</option>
         </select>
@@ -61,22 +68,22 @@
 
       <div class="input-group">
         <label>Disjuntor do Relógio</label>
-        <input type="text">
+        <input type="text" id="disjRelogio">
       </div>
 
       <div class="input-group">
         <label>Bitola do Cabo</label>
-        <input type="text">
+        <input type="text" id="bitola">
       </div>
 
       <div class="input-group">
         <label>Disjuntor Geral</label>
-        <input type="text">
+        <input type="text" id="disjGeral">
       </div>
 
       <div class="input-group">
         <label>Possui Gerador?</label>
-        <select id="geradorSelect">
+        <select id="gerador">
           <option>Não</option>
           <option>Sim</option>
         </select>
@@ -84,12 +91,12 @@
 
       <div class="input-group" id="potenciaGroup" style="display:none;">
         <label>Potência do Gerador</label>
-        <input type="text">
+        <input type="text" id="potencia">
       </div>
 
       <div class="input-group">
         <label>Estrutura de Montagem</label>
-        <select>
+        <select id="estrutura">
           <option>Telhado</option>
           <option>Solo</option>
           <option>Galpão</option>
@@ -98,55 +105,17 @@
 
       <div class="input-group">
         <label>Material da Terça</label>
-        <input type="text">
+        <input type="text" id="material">
       </div>
 
       <div class="input-group">
         <label>Distância entre as Terças</label>
-        <input type="text">
+        <input type="text" id="distancia">
       </div>
+
     </div>
 
-    <h2>Fotos</h2>
-
-    <div class="photos-grid">
-      <div class="photo-group">
-        <label>Caixa do Medidor</label>
-        <input type="file" accept="image/*" capture="environment">
-      </div>
-
-      <div class="photo-group">
-        <label>Disjuntor de Entrada</label>
-        <input type="file" accept="image/*" capture="environment">
-      </div>
-
-      <div class="photo-group">
-        <label>Medidor</label>
-        <input type="file" accept="image/*" capture="environment">
-      </div>
-
-      <div class="photo-group">
-        <label>Padrão</label>
-        <input type="file" accept="image/*" capture="environment">
-      </div>
-
-      <div class="photo-group">
-        <label>Número do Poste</label>
-        <input type="file" accept="image/*" capture="environment">
-      </div>
-
-      <div class="photo-group">
-        <label>Quadro de Distribuição</label>
-        <input type="file" accept="image/*" capture="environment">
-      </div>
-
-      <div class="photo-group">
-        <label>Telhado Localização</label>
-        <input type="file" accept="image/*" capture="environment">
-      </div>
-    </div>
-
-    <button type="submit" class="btn">Enviar Avaliação</button>
+    <button type="submit" class="btn">Gerar PDF</button>
 
   </form>
 </div>
